@@ -34,5 +34,17 @@ namespace WorkTimeManager.Api.Controllers
 
             return Ok();
         }
+
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] RegisterRequired account)
+        {
+            var accountResult = _accountService.Authenticate(account.Username, account.Password);
+
+            if (accountResult == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(accountResult);
+        }
     }
 }
