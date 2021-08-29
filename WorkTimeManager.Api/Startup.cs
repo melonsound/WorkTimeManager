@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkTimeManager.Api.Models;
+using WorkTimeManager.Api.Services;
 
 namespace WorkTimeManager.Api
 {
@@ -28,6 +29,13 @@ namespace WorkTimeManager.Api
         {
             services.AddDbContext<TaskContext>(options =>
                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AccountContext>(options =>
+               options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddControllers();
+
+            // Внедрение зависимости сервиса работы с аккаунтами
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +50,7 @@ namespace WorkTimeManager.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
