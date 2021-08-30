@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WorkTimeManager.Api.Models;
@@ -7,7 +8,7 @@ namespace WorkTimeManager.Api.Services
 {
     public interface ITaskService
     {
-        Task Create(Task task);
+        Task Create(Task task, Guid userId);
         IEnumerable<Task> GetAll(string userId);
     }
 
@@ -22,13 +23,13 @@ namespace WorkTimeManager.Api.Services
             _taskContext = taskContext;
         }
 
-        public Task Create(Task task)
+        public Task Create(Task task, Guid userId)
         {
             if (task == null)
                 return null;
 
             _task = new Task();
-            _task.UserId = task.UserId;
+            _task.UserId = userId;
             _task.Title = task.Title;
             _task.Deadline = task.Deadline;
             _task.Description = task.Description;
@@ -38,12 +39,11 @@ namespace WorkTimeManager.Api.Services
             _taskContext.SaveChanges();
 
             return _task;
-            //throw new NotImplementedException();
         }
 
         public IEnumerable<Task> GetAll(string userId)
         {
-            var tasks = _taskContext.Tasks.Where(x => x.UserId.ToString().Equals(userId));
+            var tasks = _taskContext.Tasks.Include(x => x.Subtasks).Where(x => x.UserId.ToString().Equals(userId));
 
 
             if (tasks == null)

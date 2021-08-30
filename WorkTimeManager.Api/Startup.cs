@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using WorkTimeManager.Api.Helpers;
 using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
 
 namespace WorkTimeManager.Api
 {
@@ -44,7 +46,12 @@ namespace WorkTimeManager.Api
             services.AddDbContext<AccountContext>(options =>
                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+            //services.AddControllers();
+
 
             services.AddAuthentication(x =>
             {

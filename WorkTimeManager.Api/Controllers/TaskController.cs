@@ -26,7 +26,9 @@ namespace WorkTimeManager.Api.Controllers
         [HttpPost("create")]
         public IActionResult CreateTask([FromBody]Task task)
         {
-            var taskResult = _taskService.Create(task);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+            var taskResult = _taskService.Create(task, new Guid(guid));
             if (taskResult == null)
                 return BadRequest(new { message = "Задача не создана (пустые значения)" });
             return Ok(taskResult);
