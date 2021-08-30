@@ -46,5 +46,27 @@ namespace WorkTimeManager.Api.Controllers
 
             return Ok(tasks);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetTask(int id)
+        {
+            var result = _taskService.Get(id);
+
+            if (result == null)
+                return BadRequest(new { message = "Не найдена задача" });
+
+            return Ok(result);
+        }
+
+        [HttpPost("update")]
+        public IActionResult UpdateTask([FromBody]Task task)
+        {
+            var updateTaskResult = _taskService.Update(task);
+
+            if (updateTaskResult == null)
+                return BadRequest(new { message = "Не найдена задача" });
+
+            return Ok(updateTaskResult);
+        }
     }
 }
