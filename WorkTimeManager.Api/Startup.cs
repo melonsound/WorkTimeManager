@@ -50,8 +50,8 @@ namespace WorkTimeManager.Api
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            //services.AddControllers();
 
+            services.AddSwaggerGen();
 
             services.AddAuthentication(x =>
             {
@@ -83,6 +83,12 @@ namespace WorkTimeManager.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Time Manager API V1");
+            });
 
             app.UseRouting();
 
