@@ -21,6 +21,7 @@ namespace WorkTimeManager.Api.Services
         IEnumerable<Account> GetAll();
         Account GetById(int id);
         string UploadImage(IFormFile files, string guid);
+        bool DeleteImage(string guid);
     }
 
     public class AccountService : IAccountService
@@ -124,6 +125,20 @@ namespace WorkTimeManager.Api.Services
                 }
             }
             return null;
+        }
+
+        public bool DeleteImage(string guid)
+        {
+            var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+            if (File.Exists(_environment.WebRootPath + account.ProfileImage))
+                File.Delete(_environment.WebRootPath + account.ProfileImage);
+
+            account.ProfileImage = string.Empty;
+
+            _accountContext.Accounts.Update(account);
+            _accountContext.SaveChanges();
+
+            return true;
         }
     }
 }

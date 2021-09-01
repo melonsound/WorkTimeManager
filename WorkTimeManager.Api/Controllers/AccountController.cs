@@ -61,5 +61,15 @@ namespace WorkTimeManager.Api.Controllers
 
             return Ok(accountImageResult);
         }
+
+        [Authorize]
+        [HttpGet("delete-image")]
+        public IActionResult DeleteImage()
+        {
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            var deleteImageResult = _accountService.DeleteImage(guid);
+
+            return Ok(deleteImageResult);
+        }
     }
 }
