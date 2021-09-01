@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,17 +20,20 @@ namespace WorkTimeManager.Api.Services
         Account Register(string username, string password);
         IEnumerable<Account> GetAll();
         Account GetById(int id);
+        string UploadImage(IFormFile files, string guid);
     }
 
     public class AccountService : IAccountService
     {
         private AccountContext _accountContext = null;
         private readonly IOptions<AuthOptions> _authOptions;
+        private static IWebHostEnvironment _environment;
 
-        public AccountService(AccountContext accountContext, IOptions<AuthOptions> authOptions)
+        public AccountService(AccountContext accountContext, IOptions<AuthOptions> authOptions, IWebHostEnvironment environment)
         {
             _accountContext = accountContext;
             _authOptions = authOptions;
+            _environment = environment;
         }
 
         public Account Register (string username, string password)
@@ -86,6 +92,35 @@ namespace WorkTimeManager.Api.Services
         public Account GetById(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public string UploadImage(IFormFile files, string guid)
+        {
+            if (files.Length > 0)
+            {
+                var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+
+                string folder = "/uploads/";
+                string fileExt = Path.GetExtension(files.FileName);
+                string fileName = Path.GetRandomFileName() + fileExt;
+                string filePath = folder + fileName;
+                if (!Directory.Exists(_environment.WebRootPath + folder))
+                {
+                    Directory.CreateDirectory(_environment.WebRootPath + folder);
+
+                }
+                using (FileStream filestream = File.Create(_environment.WebRootPath + filePath))
+                {
+                    account.ProfileImage = filePath;
+                    _accountContext.Accounts.Update(account);
+                    _accountContext.SaveChanges();
+
+                    files.CopyTo(filestream);
+                    filestream.Flush();
+                    return filePath;
+                }
+            }
+            return null;
         }
     }
 }

@@ -18,6 +18,8 @@ namespace WorkTimeManager.Api.Models
 
         public string Role { get; set; }
 
+        public string ProfileImage { get; set; }
+
         public DateTime AccountCreatedDate { get; set; }
 
         [NotMapped]

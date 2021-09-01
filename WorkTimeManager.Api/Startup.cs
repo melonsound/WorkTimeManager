@@ -90,6 +90,8 @@ namespace WorkTimeManager.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Time Manager API V1");
             });
 
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseAuthentication();
