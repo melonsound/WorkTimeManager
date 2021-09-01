@@ -18,8 +18,8 @@ namespace WorkTimeManager.Api.Services
     {
         Account Authenticate(string username, string password);
         Account Register(string username, string password);
+        Account GetProfile(string guid);
         IEnumerable<Account> GetAll();
-        Account GetById(int id);
         string UploadImage(IFormFile files, string guid);
         bool DeleteImage(string guid);
     }
@@ -90,9 +90,11 @@ namespace WorkTimeManager.Api.Services
             throw new NotImplementedException();
         }
 
-        public Account GetById(int id)
+        public Account GetProfile (string guid)
         {
-            throw new NotImplementedException();
+            var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+
+            return account;
         }
 
         public string UploadImage(IFormFile files, string guid)

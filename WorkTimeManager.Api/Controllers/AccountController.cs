@@ -11,7 +11,7 @@ using WorkTimeManager.Api.Services;
 
 namespace WorkTimeManager.Api.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -70,6 +70,16 @@ namespace WorkTimeManager.Api.Controllers
             var deleteImageResult = _accountService.DeleteImage(guid);
 
             return Ok(deleteImageResult);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetProfile()
+        {
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            var account = _accountService.GetProfile(guid);
+
+            return Ok(account);
         }
     }
 }
