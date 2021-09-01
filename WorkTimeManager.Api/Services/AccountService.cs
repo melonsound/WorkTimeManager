@@ -111,6 +111,9 @@ namespace WorkTimeManager.Api.Services
                 }
                 using (FileStream filestream = File.Create(_environment.WebRootPath + filePath))
                 {
+                    if (File.Exists(_environment.WebRootPath + account.ProfileImage))
+                        File.Delete(_environment.WebRootPath + account.ProfileImage);
+
                     account.ProfileImage = filePath;
                     _accountContext.Accounts.Update(account);
                     _accountContext.SaveChanges();
