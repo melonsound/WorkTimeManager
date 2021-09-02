@@ -68,5 +68,18 @@ namespace WorkTimeManager.Api.Controllers
 
             return Ok(updateTaskResult);
         }
+
+        [HttpPost("delete")]
+        public IActionResult DeleteTask([FromBody]Task task)
+        {
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+            var deleteTaskResult = _taskService.Delete(task, guid);
+
+            if (!deleteTaskResult)
+                return BadRequest( new { message = "не найдена задача" });
+
+            return Ok(deleteTaskResult);
+        }
     }
 }

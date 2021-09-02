@@ -8,7 +8,7 @@ namespace WorkTimeManager.Api.Services
 {
     public interface ITaskService
     {
-
+        bool Delete(Task task, string guid);
         Task Create(Task task, Guid userId);
         IEnumerable<Task> GetAll(string userId);
         IEnumerable<Task> Get(int id);
@@ -42,6 +42,19 @@ namespace WorkTimeManager.Api.Services
             _taskContext.SaveChanges();
 
             return _task;
+        }
+
+        public bool Delete(Task task, string guid)
+        {
+            var taskResult = _taskContext.Tasks.Find(task.Id);
+            if(taskResult != null && taskResult.UserId.ToString().Equals(guid))
+            {
+                _taskContext.Tasks.Attach(taskResult);
+                _taskContext.Tasks.Remove(taskResult);
+                _taskContext.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public IEnumerable<Task> Get(int id)
