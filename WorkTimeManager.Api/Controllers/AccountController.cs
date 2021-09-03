@@ -44,7 +44,7 @@ namespace WorkTimeManager.Api.Controllers
             var accountResult = _accountService.Authenticate(account.Username, account.Password);
 
             if (accountResult == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Введен неверный логин или пароль" });
 
             return Ok(accountResult);
         }
