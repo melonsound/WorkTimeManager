@@ -23,12 +23,13 @@ namespace WorkTimeManager.Api.Controllers
             _taskService = taskService;
         }
 
+
         [HttpPost("create")]
-        public IActionResult CreateTask([FromBody]Task task)
+        public IActionResult CreateTask([FromBody]Task[] tasks)
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var taskResult = _taskService.Create(task, new Guid(guid));
+            var taskResult = _taskService.Create(tasks, new Guid(guid));
             if (taskResult == null)
                 return BadRequest(new { message = "Задача не создана (пустые значения)" });
             return Ok(taskResult);
