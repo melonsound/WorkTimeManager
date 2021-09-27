@@ -23,7 +23,12 @@ namespace WorkTimeManager.Api.Controllers
             _taskService = taskService;
         }
 
-
+        /// <summary>
+        /// Create a task assigned to the user | 
+        /// Создать задачу закрепленную за пользователем
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <returns></returns>
         [HttpPost("create")]
         public IActionResult CreateTask([FromBody]Task[] tasks)
         {
@@ -35,6 +40,12 @@ namespace WorkTimeManager.Api.Controllers
             return Ok(taskResult);
         }
 
+        /// <summary>
+        /// Get all tasks assigned to the user | 
+        /// Получить все задачи закрепленные за пользователем
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet("all")]
         public IActionResult GetAllTasks(Guid userId)
         {
@@ -48,6 +59,12 @@ namespace WorkTimeManager.Api.Controllers
             return Ok(tasks);
         }
 
+        /// <summary>
+        /// Get task by task id |
+        /// Получить задачу по id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult GetTask(int id)
         {
@@ -59,6 +76,12 @@ namespace WorkTimeManager.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Change task |
+        /// Изменить задачу
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
         [HttpPost("update")]
         public IActionResult UpdateTask([FromBody]Task task)
         {
@@ -70,6 +93,12 @@ namespace WorkTimeManager.Api.Controllers
             return Ok(updateTaskResult);
         }
 
+        /// <summary>
+        /// Delete task |
+        /// Удалить задачу
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
         [HttpPost("delete")]
         public IActionResult DeleteTask([FromBody]Task task)
         {
