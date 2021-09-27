@@ -17,6 +17,8 @@ using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
+using System.Reflection;
+using System.IO;
 
 namespace WorkTimeManager.Api
 {
@@ -51,7 +53,11 @@ namespace WorkTimeManager.Api
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c => {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddAuthentication(x =>
             {
