@@ -93,6 +93,7 @@ namespace WorkTimeManager.Api
 
             app.UseSwaggerUI(c =>
             {
+                c.RoutePrefix = "";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Time Manager API V1");
             });
 
