@@ -42,9 +42,9 @@ namespace WorkTimeManager.Api
 
 
             services.AddDbContext<TaskContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseNpgsql(Config.DbConnectionString));
             services.AddDbContext<AccountContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseNpgsql(Config.DbConnectionString));
 
 
             services.AddControllers().AddNewtonsoftJson(options =>
