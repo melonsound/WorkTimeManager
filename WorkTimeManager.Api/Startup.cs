@@ -17,6 +17,8 @@ using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
+using System.Reflection;
+using System.IO;
 
 namespace WorkTimeManager.Api
 {
@@ -42,16 +44,20 @@ namespace WorkTimeManager.Api
 
 
             services.AddDbContext<TaskContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseNpgsql(Config.DbConnectionString));
             services.AddDbContext<AccountContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseNpgsql(Config.DbConnectionString));
 
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c => {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddAuthentication(x =>
             {
@@ -87,6 +93,7 @@ namespace WorkTimeManager.Api
 
             app.UseSwaggerUI(c =>
             {
+                c.RoutePrefix = "";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Time Manager API V1");
             });
 

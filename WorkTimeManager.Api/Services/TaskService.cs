@@ -9,7 +9,7 @@ namespace WorkTimeManager.Api.Services
     public interface ITaskService
     {
         bool Delete(Task task, string guid);
-        Task Create(Task task, Guid userId);
+        IEnumerable<Task> Create(Task[] tasks, Guid userId);
         IEnumerable<Task> GetAll(string userId);
         IEnumerable<Task> Get(int id);
         Task Update(Task updatedTask);
@@ -26,22 +26,27 @@ namespace WorkTimeManager.Api.Services
             _taskContext = taskContext;
         }
 
-        public Task Create(Task task, Guid userId)
+        public IEnumerable<Task> Create(Task[] tasks, Guid userId)
         {
-            if (task == null)
+            if (!(tasks.Length > 0) || tasks == null)
                 return null;
 
-            _task = new Task();
-            _task.UserId = userId;
-            _task.Title = task.Title;
-            _task.Deadline = task.Deadline;
-            _task.Description = task.Description;
-            _task.Subtasks = task.Subtasks;
+            List<Task> tasksResult = new List<Task>();
 
-            _taskContext.Add(_task);
-            _taskContext.SaveChanges();
-
-            return _task;
+            foreach(var task in tasks)
+            {
+                _task = new Task();
+                _task.UserId = userId;
+                _task.Title = task.Title;
+                _task.Deadline = task.Deadline;
+                _task.Description = task.Description;
+                _task.Subtasks = task.Subtasks;
+                _taskContext.Add(_task);
+                _taskContext.SaveChanges();
+                tasksResult.Add(_task);
+            }
+            
+            return tasksResult;
         }
 
         public bool Delete(Task task, string guid)

@@ -16,11 +16,44 @@ namespace WorkTimeManager.Api.Services
 {
     public interface IAccountService
     {
+        /// <summary>
+        /// Авторизовать пользователя
+        /// </summary>
+        /// <param name="username">Логин</param>
+        /// <param name="password">Пароль</param>
+        /// <returns>Данные авторизованного пользователя (в т.ч. токен)</returns>
         Account Authenticate(string username, string password);
+
+        /// <summary>
+        /// Зарегистрировать пользователя
+        /// </summary>
+        /// <param name="username">Логин</param>
+        /// <param name="password">Пароль</param>
+        /// <returns>Данные зарегистрированного пользователя</returns>
         Account Register(string username, string password);
+
+        /// <summary>
+        /// Получить данные пользователя
+        /// </summary>
+        /// <param name="guid">Уникальный id пользователя</param>
+        /// <returns>Данные пользователя</returns>
         Account GetProfile(string guid);
+
         IEnumerable<Account> GetAll();
+
+        /// <summary>
+        /// Загрузить изображение пользователя
+        /// </summary>
+        /// <param name="files">Заружаемые файлы</param>
+        /// <param name="guid">Уникальный id пользователя</param>
+        /// <returns>Ссылка на файл</returns>
         string UploadImage(IFormFile files, string guid);
+
+        /// <summary>
+        /// Удалить изображение пользователя
+        /// </summary>
+        /// <param name="guid">Уникальный id пользователя</param>
+        /// <returns>Результат удаления (true или false)</returns>
         bool DeleteImage(string guid);
     }
 
