@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WorkTimeManager.Api.Models;
@@ -23,6 +24,7 @@ namespace WorkTimeManager.Api.Data
 
             foreach(var task in tasks)
             {
+                task.UserId = userId;
                 _appContext.Add(task);
             }
 
@@ -42,7 +44,7 @@ namespace WorkTimeManager.Api.Data
 
         public IEnumerable<Task> GetAllTasks(Guid userId)
         {
-            var task = _appContext.Tasks.Where(x => x.UserId == userId).ToList();
+            var task = _appContext.Tasks.Include(x => x.Subtasks).Where(x => x.UserId == userId).ToList();
 
             if (task != null)
                 return task;
