@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using WorkTimeManager.Api.Data;
 using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 
@@ -16,11 +17,11 @@ namespace WorkTimeManager.Api.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private ITaskService _taskService = null;
+        private ITaskRepository _taskRepository;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskRepository taskRepository)
         {
-            _taskService = taskService;
+            _taskRepository = taskRepository;
         }
 
         /// <summary>
@@ -34,10 +35,10 @@ namespace WorkTimeManager.Api.Controllers
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var taskResult = _taskService.Create(tasks, new Guid(guid));
-            if (taskResult == null)
-                return BadRequest(new { message = "Задача не создана (пустые значения)" });
-            return Ok(taskResult);
+            _taskRepository.CreateTask(tasks, new Guid(guid));
+            _taskRepository.SaveChanges();
+            
+            return Ok();
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace WorkTimeManager.Api.Controllers
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var tasks = _taskService.GetAll(guid);
+            var tasks = _taskRepository.GetAllTasks(new Guid(guid));
 
             if (tasks == null)
                 return BadRequest(new { message = "нет задач" });
@@ -68,7 +69,9 @@ namespace WorkTimeManager.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetTask(int id)
         {
-            var result = _taskService.Get(id);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+            var result = _taskRepository.GetTask(id, new Guid(guid));
 
             if (result == null)
                 return BadRequest(new { message = "Не найдена задача" });
@@ -85,12 +88,13 @@ namespace WorkTimeManager.Api.Controllers
         [HttpPost("update")]
         public IActionResult UpdateTask([FromBody]Task task)
         {
-            var updateTaskResult = _taskService.Update(task);
+            throw new NotImplementedException();
+            //var updateTaskResult = _taskRepository.Update(task);
 
-            if (updateTaskResult == null)
-                return BadRequest(new { message = "Не найдена задача" });
+            //if (updateTaskResult == null)
+            //    return BadRequest(new { message = "Не найдена задача" });
 
-            return Ok(updateTaskResult);
+            //return Ok(updateTaskResult);
         }
 
         /// <summary>
@@ -102,14 +106,15 @@ namespace WorkTimeManager.Api.Controllers
         [HttpPost("delete")]
         public IActionResult DeleteTask([FromBody]Task task)
         {
-            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            throw new NotImplementedException();
+            //var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var deleteTaskResult = _taskService.Delete(task, guid);
+            //var deleteTaskResult = _taskService.Delete(task, guid);
 
-            if (!deleteTaskResult)
-                return BadRequest( new { message = "не найдена задача" });
+            //if (!deleteTaskResult)
+            //    return BadRequest( new { message = "не найдена задача" });
 
-            return Ok(deleteTaskResult);
+            //return Ok(deleteTaskResult);
         }
     }
 }

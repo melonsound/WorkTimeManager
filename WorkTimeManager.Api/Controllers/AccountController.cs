@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WorkTimeManager.Api.Data;
 using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 
@@ -16,12 +17,12 @@ namespace WorkTimeManager.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private AccountContext _accountContext = null;
+        private ApplicationContext _appContext = null;
         private IAccountService _accountService = null;
 
-        public AccountController(AccountContext accountContext, IAccountService accountService)
+        public AccountController(ApplicationContext appContext, IAccountService accountService)
         {
-            _accountContext = accountContext;
+            _appContext = appContext;
             _accountService = accountService;
         }
 

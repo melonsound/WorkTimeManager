@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WorkTimeManager.Api.Data;
 using WorkTimeManager.Api.Helpers;
 using WorkTimeManager.Api.Models;
 
@@ -59,13 +60,13 @@ namespace WorkTimeManager.Api.Services
 
     public class AccountService : IAccountService
     {
-        private AccountContext _accountContext = null;
+        private ApplicationContext _applicationContext = null;
         private readonly IOptions<AuthOptions> _authOptions;
         private static IWebHostEnvironment _environment;
 
-        public AccountService(AccountContext accountContext, IOptions<AuthOptions> authOptions, IWebHostEnvironment environment)
+        public AccountService(ApplicationContext appContext, IOptions<AuthOptions> authOptions, IWebHostEnvironment environment)
         {
-            _accountContext = accountContext;
+            _applicationContext = appContext;
             _authOptions = authOptions;
             _environment = environment;
         }
@@ -73,7 +74,7 @@ namespace WorkTimeManager.Api.Services
         public Account Register (string username, string password)
         {
             //Проверка на наличие уже зарегистрированного аккаунта
-            var currentAccount = _accountContext.Accounts.SingleOrDefault(x => x.Username == username);
+            var currentAccount = _applicationContext.Accounts.SingleOrDefault(x => x.Username == username);
 
             if (currentAccount != null)
                 return null;
@@ -84,15 +85,15 @@ namespace WorkTimeManager.Api.Services
             account.Role = Role.User;
             account.AccountCreatedDate = DateTime.Now;
 
-            _accountContext.Accounts.Add(account);
-            _accountContext.SaveChanges();
+            _applicationContext.Accounts.Add(account);
+            _applicationContext.SaveChanges();
 
             return account;
         }
 
         public Account Authenticate(string username, string password)
         {
-            var account = _accountContext.Accounts.SingleOrDefault(x => x.Username == username);
+            var account = _applicationContext.Accounts.SingleOrDefault(x => x.Username == username);
 
             if (account == null || !BCrypt.Net.BCrypt.Verify(password, account.Password))
                 return null;
@@ -125,7 +126,7 @@ namespace WorkTimeManager.Api.Services
 
         public Account GetProfile (string guid)
         {
-            var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+            var account = _applicationContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
 
             return account;
         }
@@ -134,7 +135,7 @@ namespace WorkTimeManager.Api.Services
         {
             if (files.Length > 0)
             {
-                var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+                var account = _applicationContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
 
                 string folder = "/uploads/";
                 string fileExt = Path.GetExtension(files.FileName);
@@ -151,8 +152,8 @@ namespace WorkTimeManager.Api.Services
                         File.Delete(_environment.WebRootPath + account.ProfileImage);
 
                     account.ProfileImage = filePath;
-                    _accountContext.Accounts.Update(account);
-                    _accountContext.SaveChanges();
+                    _applicationContext.Accounts.Update(account);
+                    _applicationContext.SaveChanges();
 
                     files.CopyTo(filestream);
                     filestream.Flush();
@@ -164,14 +165,14 @@ namespace WorkTimeManager.Api.Services
 
         public bool DeleteImage(string guid)
         {
-            var account = _accountContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
+            var account = _applicationContext.Accounts.SingleOrDefault(x => x.Id.ToString().Equals(guid));
             if (File.Exists(_environment.WebRootPath + account.ProfileImage))
                 File.Delete(_environment.WebRootPath + account.ProfileImage);
 
             account.ProfileImage = string.Empty;
 
-            _accountContext.Accounts.Update(account);
-            _accountContext.SaveChanges();
+            _applicationContext.Accounts.Update(account);
+            _applicationContext.SaveChanges();
 
             return true;
         }
