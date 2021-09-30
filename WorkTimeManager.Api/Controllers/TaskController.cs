@@ -103,18 +103,17 @@ namespace WorkTimeManager.Api.Controllers
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        [HttpPost("delete")]
-        public IActionResult DeleteTask([FromBody]Task task)
+        [HttpPost("delete/{id}")]
+        public IActionResult DeleteTask(int id)
         {
-            throw new NotImplementedException();
-            //var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            //var deleteTaskResult = _taskService.Delete(task, guid);
+            var deleteTaskResult = _taskRepository.DeleteTask(id, new Guid(guid));
 
-            //if (!deleteTaskResult)
-            //    return BadRequest( new { message = "не найдена задача" });
+            if (!deleteTaskResult)
+                return BadRequest( new { message = "не найдена задача" });
 
-            //return Ok(deleteTaskResult);
+            return Ok(deleteTaskResult);
         }
     }
 }

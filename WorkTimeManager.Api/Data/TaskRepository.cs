@@ -30,7 +30,14 @@ namespace WorkTimeManager.Api.Data
 
         public bool DeleteTask(int taskId, Guid userId)
         {
-            throw new NotImplementedException();
+            var taskResult = _appContext.Tasks.Single(x => x.Id == taskId && x.UserId == userId);
+            if (taskResult != null)
+            {
+                _appContext.Tasks.Attach(taskResult);
+                _appContext.Tasks.Remove(taskResult);
+                return true;
+            }
+            return false;
         }
 
         public IEnumerable<Task> GetAllTasks(Guid userId)
