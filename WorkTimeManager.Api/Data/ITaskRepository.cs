@@ -15,6 +15,8 @@ namespace WorkTimeManager.Api.Data
 
         IEnumerable<Task> GetTask(int taskId, Guid userId);
 
+        Task UpdateTask(Task updatedTask, Guid userId);
+
         void CreateTask(Task[] tasks, Guid userId);
     }
 }

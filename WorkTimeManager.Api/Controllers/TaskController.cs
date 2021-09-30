@@ -88,13 +88,16 @@ namespace WorkTimeManager.Api.Controllers
         [HttpPost("update")]
         public IActionResult UpdateTask([FromBody]Task task)
         {
-            throw new NotImplementedException();
-            //var updateTaskResult = _taskRepository.Update(task);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            //if (updateTaskResult == null)
-            //    return BadRequest(new { message = "Не найдена задача" });
+            var updateTaskResult = _taskRepository.UpdateTask(task, new Guid(guid));
 
-            //return Ok(updateTaskResult);
+            if (updateTaskResult == null)
+                return BadRequest(new { message = "Не найдена задача" });
+
+            _taskRepository.SaveChanges();
+
+            return Ok(updateTaskResult);
         }
 
         /// <summary>
@@ -113,6 +116,7 @@ namespace WorkTimeManager.Api.Controllers
             if (!deleteTaskResult)
                 return BadRequest( new { message = "не найдена задача" });
 
+            _taskRepository.SaveChanges();
             return Ok(deleteTaskResult);
         }
     }

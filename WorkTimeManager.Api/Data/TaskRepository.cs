@@ -54,7 +54,7 @@ namespace WorkTimeManager.Api.Data
 
         public IEnumerable<Task> GetTask(int taskId, Guid userId)
         {
-            var tasks = _appContext.Tasks.Where(x => x.Id == taskId && x.UserId == userId).ToList();
+            var tasks = _appContext.Tasks.Include(x => x.Subtasks).Where(x => x.Id == taskId && x.UserId == userId).ToList();
 
             if (tasks != null)
                 return tasks;
@@ -69,7 +69,20 @@ namespace WorkTimeManager.Api.Data
 
         public Task UpdateTask(Task updatedTask, Guid userId)
         {
-            throw new NotImplementedException();
+            var task = _appContext.Tasks.Include(x => x.Subtasks).SingleOrDefault(x => x.Id == updatedTask.Id);
+
+            if (task == null)
+                return null;
+
+            task.Title = updatedTask.Title;
+            task.Deadline = updatedTask.Deadline;
+            task.Completed = updatedTask.Completed;
+            task.Description = updatedTask.Description;
+            task.Subtasks = updatedTask.Subtasks;
+
+            _appContext.Tasks.Update(task);
+
+            return task;
         }
     }
 }
