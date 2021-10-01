@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using WorkTimeManager.Api.Data;
+using WorkTimeManager.Api.Dtos;
 using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 
@@ -18,10 +20,12 @@ namespace WorkTimeManager.Api.Controllers
     public class TaskController : ControllerBase
     {
         private ITaskRepository _taskRepository;
+        private IMapper _mapper;
 
-        public TaskController(ITaskRepository taskRepository)
+        public TaskController(ITaskRepository taskRepository, IMapper mapper)
         {
             _taskRepository = taskRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace WorkTimeManager.Api.Controllers
             if (tasks == null)
                 return BadRequest(new { message = "нет задач" });
 
-            return Ok(tasks);
+            return Ok(_mapper.Map<IEnumerable<TaskReadDto>>(tasks));
         }
 
         /// <summary>
