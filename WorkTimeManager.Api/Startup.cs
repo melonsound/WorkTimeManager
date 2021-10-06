@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.IO;
+using WorkTimeManager.Api.Data;
 
 namespace WorkTimeManager.Api
 {
@@ -43,15 +44,15 @@ namespace WorkTimeManager.Api
             var key = Encoding.ASCII.GetBytes(auth.Secret);
 
 
-            services.AddDbContext<TaskContext>(options =>
-               options.UseNpgsql(Config.DbConnectionString));
-            services.AddDbContext<AccountContext>(options =>
+            services.AddDbContext<ApplicationContext>(options =>
                options.UseNpgsql(Config.DbConnectionString));
 
-
+            
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c => {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -79,7 +80,7 @@ namespace WorkTimeManager.Api
 
             // Внедрение зависимостей
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -6,6 +7,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using WorkTimeManager.Api.Data;
+using WorkTimeManager.Api.Dtos;
 using WorkTimeManager.Api.Models;
 using WorkTimeManager.Api.Services;
 
@@ -16,11 +19,13 @@ namespace WorkTimeManager.Api.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private ITaskService _taskService = null;
+        private ITaskRepository _taskRepository;
+        private IMapper _mapper;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskRepository taskRepository, IMapper mapper)
         {
-            _taskService = taskService;
+            _taskRepository = taskRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -34,10 +39,10 @@ namespace WorkTimeManager.Api.Controllers
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var taskResult = _taskService.Create(tasks, new Guid(guid));
-            if (taskResult == null)
-                return BadRequest(new { message = "Задача не создана (пустые значения)" });
-            return Ok(taskResult);
+            _taskRepository.CreateTask(tasks, new Guid(guid));
+            _taskRepository.SaveChanges();
+            
+            return Ok();
         }
 
         /// <summary>
@@ -51,12 +56,12 @@ namespace WorkTimeManager.Api.Controllers
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var tasks = _taskService.GetAll(guid);
+            var tasks = _taskRepository.GetAllTasks(new Guid(guid));
 
             if (tasks == null)
                 return BadRequest(new { message = "нет задач" });
 
-            return Ok(tasks);
+            return Ok(_mapper.Map<IEnumerable<TaskReadDto>>(tasks));
         }
 
         /// <summary>
@@ -68,7 +73,9 @@ namespace WorkTimeManager.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetTask(int id)
         {
-            var result = _taskService.Get(id);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+            var result = _taskRepository.GetTask(id, new Guid(guid));
 
             if (result == null)
                 return BadRequest(new { message = "Не найдена задача" });
@@ -85,10 +92,14 @@ namespace WorkTimeManager.Api.Controllers
         [HttpPost("update")]
         public IActionResult UpdateTask([FromBody]Task task)
         {
-            var updateTaskResult = _taskService.Update(task);
+            var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+
+            var updateTaskResult = _taskRepository.UpdateTask(task, new Guid(guid));
 
             if (updateTaskResult == null)
                 return BadRequest(new { message = "Не найдена задача" });
+
+            _taskRepository.SaveChanges();
 
             return Ok(updateTaskResult);
         }
@@ -99,16 +110,17 @@ namespace WorkTimeManager.Api.Controllers
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        [HttpPost("delete")]
-        public IActionResult DeleteTask([FromBody]Task task)
+        [HttpPost("delete/{id}")]
+        public IActionResult DeleteTask(int id)
         {
             var guid = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-            var deleteTaskResult = _taskService.Delete(task, guid);
+            var deleteTaskResult = _taskRepository.DeleteTask(id, new Guid(guid));
 
             if (!deleteTaskResult)
                 return BadRequest( new { message = "не найдена задача" });
 
+            _taskRepository.SaveChanges();
             return Ok(deleteTaskResult);
         }
     }
