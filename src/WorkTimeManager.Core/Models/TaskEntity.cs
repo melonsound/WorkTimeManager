@@ -9,6 +9,12 @@ namespace WorkTimeManager.Core.Models
 {
     public class TaskEntity : BaseEntity
     {
+        public TaskEntity()
+        {
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
+        }
+
         public string? Title { get; set; }
         public string? Description { get; set; }
         public bool Completed { get; set; }
