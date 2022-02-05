@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Core", "src\WorkTimeManager.Core\WorkTimeManager.Core.csproj", "{94412C08-B1AE-4C6F-A8C1-F50962E858E0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Infrastructure", "src\WorkTimeManager.Infrastructure\WorkTimeManager.Infrastructure.csproj", "{B01D429B-6051-4238-90C4-CF9438240449}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Web", "src\WorkTimeManager.Web\WorkTimeManager.Web.csproj", "{83886430-F232-4558-B086-E9BC77188DA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Security", "src\WorkTimeManager.Security\WorkTimeManager.Security.csproj", "{B8A0332F-C820-4248-9E7B-FE35350D8F22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Core", "src\WorkTimeManager.Core\WorkTimeManager.Core.csproj", "{BA6BF920-997C-43DD-9C1D-977BA2382BE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeManager.Infrastructure", "src\WorkTimeManager.Infrastructure\WorkTimeManager.Infrastructure.csproj", "{105EFE02-848A-4BAF-9394-7221374D4093}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{94412C08-B1AE-4C6F-A8C1-F50962E858E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94412C08-B1AE-4C6F-A8C1-F50962E858E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94412C08-B1AE-4C6F-A8C1-F50962E858E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94412C08-B1AE-4C6F-A8C1-F50962E858E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B01D429B-6051-4238-90C4-CF9438240449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B01D429B-6051-4238-90C4-CF9438240449}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B01D429B-6051-4238-90C4-CF9438240449}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B01D429B-6051-4238-90C4-CF9438240449}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83886430-F232-4558-B086-E9BC77188DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83886430-F232-4558-B086-E9BC77188DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83886430-F232-4558-B086-E9BC77188DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83886430-F232-4558-B086-E9BC77188DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A0332F-C820-4248-9E7B-FE35350D8F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A0332F-C820-4248-9E7B-FE35350D8F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A0332F-C820-4248-9E7B-FE35350D8F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A0332F-C820-4248-9E7B-FE35350D8F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA6BF920-997C-43DD-9C1D-977BA2382BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA6BF920-997C-43DD-9C1D-977BA2382BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA6BF920-997C-43DD-9C1D-977BA2382BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA6BF920-997C-43DD-9C1D-977BA2382BE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{105EFE02-848A-4BAF-9394-7221374D4093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{105EFE02-848A-4BAF-9394-7221374D4093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{105EFE02-848A-4BAF-9394-7221374D4093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{105EFE02-848A-4BAF-9394-7221374D4093}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
