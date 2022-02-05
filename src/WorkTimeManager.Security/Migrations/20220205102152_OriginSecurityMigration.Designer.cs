@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkTimeManager.Security.Data;
@@ -11,9 +12,10 @@ using WorkTimeManager.Security.Data;
 namespace WorkTimeManager.Security.Migrations
 {
     [DbContext(typeof(AppSecurityDbContext))]
-    partial class AppSecurityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220205102152_OriginSecurityMigration")]
+    partial class OriginSecurityMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
