@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,8 @@ using WorkTimeManager.Security.Models;
 
 namespace WorkTimeManager.Security.Data
 {
-    public class AppSecurityDbContext : DbContext
+    public class AppSecurityDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     {
-        public DbSet<AppUser> appUsers { get; set; }
 
         public AppSecurityDbContext(DbContextOptions<AppSecurityDbContext> options) : base(options)
         {

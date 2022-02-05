@@ -15,7 +15,7 @@ namespace WorkTimeManager.Security.Data
         {
 
             var optionsBuilder = new DbContextOptionsBuilder<AppSecurityDbContext>();
-            optionsBuilder.UseNpgsql("User ID=postgres;Password=root;Host=localhost;Port=5432;Database=wtm_v2_security;Trust Server Certificate=true");
+            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("SECURITY_DB"));
 
             return new AppSecurityDbContext(optionsBuilder.Options);
         }
