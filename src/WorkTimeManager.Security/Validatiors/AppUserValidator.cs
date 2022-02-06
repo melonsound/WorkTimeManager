@@ -29,7 +29,7 @@ namespace WorkTimeManager.Security.Validatiors
             RuleFor(x => x.PasswordHash)
                 .NotEmpty().WithMessage(ErrorMessage.PasswordLength(minPasswordLength))
                 .NotNull().WithMessage(ErrorMessage.PasswordLength(minPasswordLength))
-                .MinimumLength(minPasswordLength).WithMessage(ErrorMessage.PasswordLength(minUsernameLength))
+                .MinimumLength(minPasswordLength).WithMessage(ErrorMessage.PasswordLength(minPasswordLength))
                 .Matches("[A-Z]").WithMessage(ErrorMessage.PasswordUppercase)
                 .Matches("[a-z]").WithMessage(ErrorMessage.PasswordLowercase)
                 .Matches("[0-9]").WithMessage(ErrorMessage.PasswordDigit);
