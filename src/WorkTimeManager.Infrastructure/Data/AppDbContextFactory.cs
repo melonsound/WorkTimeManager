@@ -16,7 +16,7 @@ namespace WorkTimeManager.Infrastructure.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseNpgsql(_config["MainApp:AppDbConnectionString"]);
+            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("INFRASTRUCTURE_DB"));
 
             return new AppDbContext(optionsBuilder.Options);
         }
