@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WorkTimeManager.Core.Models;
 using WorkTimeManager.Core.Models.Dto;
 
 namespace WorkTimeManager.Core.Interfaces
 {
     public interface ITaskService
     {
-        Task<TaskEntityDto> GetTaskByIdAsync(int taskId, Guid userId);
-        Task<List<TaskEntityDto>> GetAllTasksAsync(Guid userId);
-        Task<TaskEntityDto> CreateTaskAsync(TaskEntityDto taskEntity);
-        Task<TaskEntityDto> UpdateTaskAsync(TaskEntityDto taskEntity, Guid userId);
-        Task<bool> DeleteTaskAsync(int taskId, Guid userId);
+        Task<Response> AddToFavoriteAsync(int taskId, Guid userId);
+        Task<Response> RemoveFromFavoriteAsync(int taskId, Guid userId);
+        Task<TaskEntityDto?> GetTaskByIdAsync(int taskId, Guid userId);
+        Task<List<TaskEntityDto>?> GetAllTasksAsync(Guid userId);
+        Task<Response> CreateTaskAsync(PostTaskEntityDto taskEntity, Guid userId);
+        Task<Response> UpdateTaskAsync(UpdateTaskEntityDto taskEntity, Guid userId);
+        Task<Response> DeleteTaskAsync(int taskId, Guid userId);
     }
 }
