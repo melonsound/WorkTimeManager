@@ -14,11 +14,14 @@ namespace WorkTimeManager.Core.Models.Extensions
             return new TaskEntityDto()
             {
                 Id = taskEntity.Id,
+                CreatedAt = taskEntity.CreatedAt,
+                UpdatedAt = taskEntity.UpdatedAt,
                 Title = taskEntity.Title,
                 Description = taskEntity.Description,
                 Completed = taskEntity.Completed,
                 Deadline = taskEntity.Deadline,
                 UserId = taskEntity.UserId,
+                IsFavorites = taskEntity.IsFavorites,
                 Subtasks = taskEntity.Subtasks.Select(x => x.ToDto()).ToList(),
             };
         }
