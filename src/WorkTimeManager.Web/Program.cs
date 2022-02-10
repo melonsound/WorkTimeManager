@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WorkTimeManager.Core.Interfaces;
+using WorkTimeManager.Core.Models;
 using WorkTimeManager.Infrastructure;
 using WorkTimeManager.Infrastructure.Data;
 using WorkTimeManager.Infrastructure.Services;
+using WorkTimeManager.Infrastructure.Validators;
 using WorkTimeManager.Security;
 using WorkTimeManager.Security.Data;
 using WorkTimeManager.Security.Models;
@@ -30,6 +32,7 @@ builder.Services.AddSecurityDbContext(securityConnString);
 builder.Services.AddDbContext(connString);
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IValidator<AppUser>, AppUserValidator>();
+builder.Services.AddScoped<IValidator<TaskEntity>, TaskEntityValidator>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>
