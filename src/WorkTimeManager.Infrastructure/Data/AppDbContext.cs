@@ -13,6 +13,7 @@ namespace WorkTimeManager.Infrastructure.Data
     {
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<Subtask> Subtasks { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
