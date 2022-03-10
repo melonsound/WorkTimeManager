@@ -1,10 +1,12 @@
-﻿using WorkTimeManager.Core.Models;
+﻿using Microsoft.AspNetCore.Http;
+using WorkTimeManager.Core.Models;
 
 namespace WorkTimeManager.Core.Interfaces
 {
     public interface IAccountService
     {
-        Task<Token> GenerateTokenAsync(string username);
+        Task<Response> UploadUserImageAsync(IFormFile files, Guid userId);
+        Task<Token?> GenerateTokenAsync(string username);
         Task<Response> RegisterUserAsync(AccountRegister account);
         Task<Response> LoginUserAsync(AccountRegister account);
         Task<Response> CreateRoleAsync(string roleName);
