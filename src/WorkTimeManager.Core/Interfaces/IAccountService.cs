@@ -5,6 +5,7 @@ namespace WorkTimeManager.Core.Interfaces
 {
     public interface IAccountService
     {
+        Task<AccountResponse?> AccountAsync(Guid userId);
         Task<Response> UploadUserImageAsync(IFormFile files, Guid userId);
         Task<Token?> GenerateTokenAsync(string username);
         Task<Response> RegisterUserAsync(AccountRegister account);
