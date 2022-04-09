@@ -201,7 +201,7 @@ namespace WorkTimeManager.Security.Services
             var genToken = new JwtSecurityToken(
                 new JwtHeader(
                     new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECURITY_KEY"))),
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("APP_JWT_ISSUERKEY"))),
                         SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(claims));
 
