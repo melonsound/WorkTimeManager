@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./src/WorkTimeManager.Web/Dockerfile
+    ports:
+      - "5000:80"
+      - "5050:5050"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Debug
+      - JWT_SECURITY_KEY=SaxtonHale#5^MVMElsePootisMan<q+-Chucklenuts&1]Pyropocalypse+
+      - MAIN_DB=User ID=postgres;Password=root;Host=localhost;Port=5432;Database=wtm_v2;Trust Server Certificate=true
+      - SECURITY_DB=User ID=postgres;Password=root;Host=localhost;Port=5432;Database=wtm_v2_security2;Trust Server Certificate=true

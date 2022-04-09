@@ -8,6 +8,7 @@ using WorkTimeManager.Core.Interfaces;
 using WorkTimeManager.Core.Models;
 using WorkTimeManager.Infrastructure;
 using WorkTimeManager.Infrastructure.Data;
+using WorkTimeManager.Infrastructure.Interfaces;
 using WorkTimeManager.Infrastructure.Services;
 using WorkTimeManager.Infrastructure.Validators;
 using WorkTimeManager.Security;
@@ -18,9 +19,9 @@ using WorkTimeManager.Security.Validatiors;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connString = builder.Configuration["MainApp:LocalDb"];
-var securityConnString = builder.Configuration["MainApp:LocalDbSecurity"];
-var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECURITY_KEY"));
+var connString = Environment.GetEnvironmentVariable("MAIN_DB"); 
+var securityConnString = Environment.GetEnvironmentVariable("SECURITY_DB");
+var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("APP_JWT_ISSUERKEY"));
 
 // #Startup
 #region Services
@@ -34,6 +35,8 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IValidator<AppUser>, AppUserValidator>();
 builder.Services.AddScoped<IValidator<TaskEntity>, TaskEntityValidator>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IGoogleDriveCloudService, GoogleDriveCloudService>(x => 
+    new GoogleDriveCloudService("GoogleDrive/client_secret_desktop.json", "worktimemanager", Environment.GetEnvironmentVariable("APP_GOOGLEDRIVE_FOLDERID")));
 
 builder.Services.AddIdentity<AppUser, AppUserRole>(options =>
 {
@@ -62,6 +65,10 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+#if !DEBUG
+//builder.WebHost.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"));
+#endif
+
 #endregion
 
 
@@ -69,7 +76,6 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 var app = builder.Build();
-
 using (var serviceScope = app.Services.CreateScope())
 {
     var appDataDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -84,6 +90,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.UseEndpoints(endpoints =>
 {
