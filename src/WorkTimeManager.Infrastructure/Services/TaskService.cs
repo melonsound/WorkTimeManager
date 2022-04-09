@@ -88,7 +88,9 @@ namespace WorkTimeManager.Infrastructure.Services
 
         public async Task<TaskEntityDto?> GetTaskByIdAsync(int taskId, Guid userId)
         {
-            var task = await _appDbContext.Tasks.FindAsync(taskId);
+            var task = await _appDbContext.Tasks
+                .Include(s => s.Subtasks)
+                .SingleOrDefaultAsync(x => x.Id == taskId);
             if (task == null || task.UserId != userId)
                 return null;
 
