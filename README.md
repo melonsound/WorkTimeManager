@@ -1,4 +1,4 @@
-# [WorkTimeManager](https://wtm-api-v1.herokuapp.com)
+# [WorkTimeManager](https://melonsound.ru/swagger)
 API приложения с функционалом планирования задач и подсчета времени работы
 
 
@@ -6,18 +6,22 @@ API приложения с функционалом планирования з
 
 Особенности:
 - Регистрация/авторизация в сервисе
+- Добавление задач в избранное
 - Добавление, редактирование, удаление задач
 - Учет времени задач 
 
 Используется:
-- ASP.NET Core 5 (Web API)
+- ASP.NET 6 (Web API)
 - Swagger OpenAPI спецификация
 - Docker 
 - PostgreSQL 
+- FluentValidation
+- Mapster
+- Google Drive API v3
 
 # Build
 
-Requires .NET 5 SDK to build
+Requires .NET 6 SDK to build
 
 Install the dependencies and devDependencies and start the server.
 
@@ -26,4 +30,10 @@ dotnet restore
 dotnet build
 dotnet run
 ```
+# ENV Variables
+
+- MAIN_DB - Infrastructure database connection srting
+- SECURITY_DB - Security (Microsoft identity) database connection string
+- APP_JWT_ISSUERKEY - JWT Issuer key
+- APP_GOOGLEDRIVE_FOLDERID - Since the Google Drive API is temporarily unused, the environment variable can be filled with any value.
 
