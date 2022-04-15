@@ -32,8 +32,8 @@ dotnet run
 ```
 # ENV Variables
 
-- MAIN_DB - Infrastructure database connection srting
-- SECURITY_DB - Security (Microsoft identity) database connection string
+- MAIN_DB - Infrastructure database connection srting (PostgreSQL)
+- SECURITY_DB - Security (Microsoft identity) database connection string (PostgreSQL)
 - APP_JWT_ISSUERKEY - JWT Issuer key
 - APP_GOOGLEDRIVE_FOLDERID - Since the Google Drive API is temporarily unused, the environment variable can be filled with any value.
 
