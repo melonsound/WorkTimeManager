@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "Starting Work Time Manager Backend"
+sleep 3
+
+# setting up environment variables
+
+export APP_GOOGLEDRIVE_FOLDERID=""
+
+export JWT_SECURITY_KEY=""
+
+export APP_JWT_ISSUERKEY=""
+
+export SECURITY_DB=""
+
+export MAIN_DB=""
+
+sleep 1
+
+# start Kestrel
+dotnet WorkTimeManager.Web.dll
