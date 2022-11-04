@@ -32,6 +32,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSecurityDbContext(securityConnString);
 builder.Services.AddDbContext(connString);
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IValidator<AppUser>, AppUserValidator>();
 builder.Services.AddScoped<IValidator<TaskEntity>, TaskEntityValidator>();
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -66,9 +67,8 @@ builder.Services.AddAuthentication(x =>
 });
 
 #if !DEBUG
-//builder.WebHost.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"));
+//
 #endif
-
 #endregion
 
 
