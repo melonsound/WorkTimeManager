@@ -1,4 +1,4 @@
-# [WorkTimeManager](https://melonsound.ru/swagger)
+# [WorkTimeManager](https://melonsnd.ru/swagger)
 API приложения с функционалом планирования задач и подсчета времени работы
 
 
